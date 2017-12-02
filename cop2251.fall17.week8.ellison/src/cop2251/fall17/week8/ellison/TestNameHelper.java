@@ -59,8 +59,8 @@ public class TestNameHelper
 	@Test
 	public void testRank()
 	{
-	//	assertEquals(19511, h.getRank("2015", "noah", "M"));
-	//	assertEquals(5, h.getRank("2015", "zyus", "M"));
+		assertEquals(19511, h.getRank("2015", "noah", "M"));
+		assertEquals(5, h.getRank("2015", "zyus", "M"));
 		assertEquals(5304, h.getRank("1900", "margaret", "F"));
 	}
 }

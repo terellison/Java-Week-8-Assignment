@@ -1,3 +1,5 @@
+// Terry Ellison SPC ID: 2335229
+
 package cop2251.fall17.week8.ellison;
 
 import java.io.File;
@@ -14,13 +16,11 @@ public class NameHelper {
 	private Map<String, Map<String, Integer>> girlsByYear = new HashMap<>();
 	private Map<String, Map<String, Integer>> boysByYear = new HashMap<>();
 	public void load() throws FileNotFoundException{
-		
 		File dir = new File("src/data");
         File [] files = dir.listFiles();
         FileInputStream input = null;
         StringBuilder sb = new StringBuilder();
         int year = 1900;
-       
         // for each file in the directory...
         for (File f : files)
         {
@@ -30,11 +30,11 @@ public class NameHelper {
                     read a line get the name, gender, and ranking
                     add the data to the maps    
              */                           
-        	
         	Map<String, Integer> innerBoyMap = new HashMap<>();
             Map<String, Integer> innerGirlMap = new HashMap<>();
+        	
              
-            girlsByYear.put(Integer.toString(year), innerBoyMap);
+            girlsByYear.put(Integer.toString(year), innerGirlMap);
             boysByYear.put(Integer.toString(year), innerBoyMap);
         	input = new FileInputStream(f);
         	byte byteArr[] = new byte[(int) f.length()];
@@ -60,26 +60,28 @@ public class NameHelper {
 			} else {
 			year++;
 			}
-			String sbToString = sb.toString();
-	        String recordArray[] = sbToString.split("\n");
-	        for(int i = 0; i < recordArray.length; i++) {
-	        	String singleRecArr[] = recordArray[i].split(",");
-	        	if(singleRecArr.length == 1) {
-	        		break;
-	        	}
-	        	String name = singleRecArr[0];
-	        	char gender = singleRecArr[1].charAt(0);
-	        	int rank = Integer.parseInt(singleRecArr[2].trim());
-	        	
-	        	
-	        	if(gender == 'M') {
-	        		innerBoyMap.put(name, rank);
-	        	} else {
-	        		innerGirlMap.put(name, rank);
-	        	}
-	        }
+			
         }
-        
+        String sbToString = sb.toString().trim();
+        String recordArray[] = sbToString.split("\n");
+        year = 1900;
+        for(int i = 0; i <= recordArray.length - 1; i++) {
+        	String singleRecArr[] = recordArray[i].split(",");
+        	if(singleRecArr.length == 1) {
+        		year++;
+        		continue;
+        	}
+        	String name = singleRecArr[0];
+        	char gender = singleRecArr[1].charAt(0);
+        	int rank = Integer.parseInt(singleRecArr[2].trim());
+        	
+        	
+        	if(gender == 'M') {
+        		boysByYear.get(Integer.toString(year)).put(name, rank);
+        	} else {
+        		girlsByYear.get(Integer.toString(year)).put(name, rank);
+        	}
+        }
 	}
 
 	
