@@ -32,12 +32,12 @@ public class NameHelper {
              */                           
         	Map<String, Integer> innerBoyMap = new HashMap<>();
             Map<String, Integer> innerGirlMap = new HashMap<>();
-        	
-             
+            
             girlsByYear.put(Integer.toString(year), innerGirlMap);
             boysByYear.put(Integer.toString(year), innerBoyMap);
         	input = new FileInputStream(f);
         	byte byteArr[] = new byte[(int) f.length()];
+        	
 			try {
 				input.read(byteArr);
 			} catch (IOException e) {
@@ -83,16 +83,8 @@ public class NameHelper {
         	}
         }
 	}
-
-	
-	
 	public int getRank(String year, String name, String gender) {
-		StringBuilder trueName = new StringBuilder();
-		
-		trueName.append(Character.toUpperCase(name.charAt(0)));
-		trueName.append(name.substring(1,name.length()).toLowerCase());
-		
-		name = trueName.toString();
+		name = sanitize(name);
 		
 		if(gender == "M") {
 			return boysByYear.get(year).get(name);
@@ -101,17 +93,9 @@ public class NameHelper {
 		}
 		
 	}
-	
 	public boolean isNamePresent(String name, String gender) {
 		boolean nameIsPresent = false;
-		StringBuilder trueName = new StringBuilder();
-		
-		trueName.append(Character.toUpperCase(name.charAt(0)));
-		trueName.append(name.substring(1,name.length()).toLowerCase());
-		
-		name = trueName.toString();
-		
-		
+		name = sanitize(name);
 		for(int year = 1900; year < 2016; year++) {
 			if(gender == "M") {
 				if(boysByYear.get(Integer.toString(year)).containsKey(name)) {
@@ -136,5 +120,17 @@ public class NameHelper {
 		treeSet.addAll(boysByYear.keySet());
 		
 		return treeSet;
+	}
+	
+	private String sanitize(String input) {
+		String output;
+		StringBuilder cleanInput = new StringBuilder();
+		
+		cleanInput.append(Character.toUpperCase(input.charAt(0)));
+		cleanInput.append(input.substring(1,input.length()).toLowerCase());
+		
+		output = cleanInput.toString();
+		
+		return output;
 	}
 }
