@@ -8,3 +8,4 @@ This yeilds a data structure such as boysByYear<Integer,Map<String, Integer>> an
 
 # Application in Action
 
+![alt-text](https://github.com/terellison/Java-Week-8-Assignment/blob/master/BabyNameChart.png)
