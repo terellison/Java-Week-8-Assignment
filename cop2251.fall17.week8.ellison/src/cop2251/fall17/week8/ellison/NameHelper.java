@@ -70,10 +70,9 @@ public class NameHelper {
         		year++;
         		continue;
         	}
-        	String name = singleRecArr[0];
+        	String name = sanitize(singleRecArr[0]);
         	char gender = singleRecArr[1].charAt(0);
         	int rank = Integer.parseInt(singleRecArr[2].trim());
-        	
         	
         	if(gender == 'M') {
         		boysByYear.get(Integer.toString(year)).put(name, rank);
@@ -85,18 +84,18 @@ public class NameHelper {
 	public int getRank(String year, String name, String gender) { // Returns the rank of a name in a given year
 		name = sanitize(name);
 		if(gender.equals("F")) {
-			if (boysByYear.get(year).get(name) == null) {
-				return 0;
-			}
-			else {
-				return boysByYear.get(year).get(name);
-			}
-		} else {
 			if (girlsByYear.get(year).get(name) == null) {
 				return 0;
 			}
 			else {
 				return girlsByYear.get(year).get(name);
+			}
+		} else {
+			if (boysByYear.get(year).get(name) == null) {
+				return 0;
+			}
+			else {
+				return boysByYear.get(year).get(name);
 			}
 		}
 	}
@@ -109,12 +108,14 @@ public class NameHelper {
 			if(gender == "M") {
 				if(boysByYear.get(Integer.toString(year)).containsKey(name)) {
 					nameIsPresent = true;
+					break;
 				} else {
 					nameIsPresent = false;
 				}
 			} else {
 				if(girlsByYear.get(Integer.toString(year)).containsKey(name)) {
 					nameIsPresent = true;
+					break;
 				} else {
 					nameIsPresent = false;
 					}
