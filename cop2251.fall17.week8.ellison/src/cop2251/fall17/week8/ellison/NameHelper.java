@@ -3,12 +3,10 @@
 package cop2251.fall17.week8.ellison;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,13 +15,14 @@ public class NameHelper {
 	private Map<String, Map<String, Integer>> boysByYear = new HashMap<>();
 	
 	/* Loads the data from the data files into one of two Maps depending on the gender character found
-		in the record with the name. Currently uses binary file IO but will be revised and simplified */
+		in the record with the name. */
 	public void load() throws FileNotFoundException{ 
+		
+		
 		File dir = new File("src/data");
         File [] files = dir.listFiles();
-        FileInputStream input = null;
-        StringBuilder sb = new StringBuilder();
         int year = 1900;
+        
         // for each file in the directory...
         for (File f : files)
         {
@@ -38,47 +37,22 @@ public class NameHelper {
             
             girlsByYear.put(Integer.toString(year), innerGirlMap);
             boysByYear.put(Integer.toString(year), innerBoyMap);
-        	input = new FileInputStream(f);
-        	byte byteArr[] = new byte[(int) f.length()];
-        	
-			try {
-				input.read(byteArr);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	String inputString = null;
-			try {
-				inputString = new String(byteArr, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			sb.append(inputString);
-			sb.append("\n");
-			if((year + 1) == 2016) {
-				break;
-			} else {
-			year++;
-			}
-        }
-        String sbToString = sb.toString().trim();
-        String recordArray[] = sbToString.split("\n");
-        year = 1900;
-        for(int i = 0; i <= recordArray.length - 1; i++) {
-        	String singleRecArr[] = recordArray[i].split(",");
-        	if(singleRecArr.length == 1) {
-        		year++;
-        		continue;
-        	}
-        	String name = sanitize(singleRecArr[0]);
-        	char gender = singleRecArr[1].charAt(0);
-        	int rank = Integer.parseInt(singleRecArr[2].trim());
-        	
-        	if(gender == 'M') {
-        		boysByYear.get(Integer.toString(year)).put(name, rank);
-        	} else {
-        		girlsByYear.get(Integer.toString(year)).put(name, rank);
-        	}
+            
+            Scanner input = new Scanner(f);
+            while(input.hasNextLine()) {
+            	String inputString = input.nextLine();
+            	String[] record = inputString.split(",");
+            	String name = sanitize(record[0]);
+            	char gender = record[1].charAt(0);
+            	int rank = Integer.parseInt(record[2]);
+            	
+            	if(gender == 'M') 
+            		boysByYear.get(Integer.toString(year)).put(name, rank);
+            	else
+            		girlsByYear.get(Integer.toString(year)).put(name, rank);
+            }
+            year++;
+            input.close();
         }
 	}
 	public int getRank(String year, String name, String gender) { // Returns the rank of a name in a given year
