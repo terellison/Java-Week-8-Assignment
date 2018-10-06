@@ -58,8 +58,6 @@ public class BabyNameChart extends Application
         	// add a data point (year, rank) to our series.
 			series.getData().add( new XYChart.Data(year,rank) );
 			
-			// for debug...
-			//System.out.printf("%4s-%4d\n", year, h.getRank(year, name, gender));
 		}  
         
 	}
@@ -77,9 +75,7 @@ public class BabyNameChart extends Application
         xAxis.setLabel("Year");
         yAxis.setLabel("Popularity");
         yAxis.setAutoRanging(true);
-        
-        //creating the chart.  Data will be added later.
- //       LineChart<String,Number> lineChart = new LineChart<String,Number>(xAxis,yAxis);    
+           
         AreaChart<String,Number> chart = new AreaChart<String,Number>(xAxis,yAxis);             
 
         chart.setTitle("Popularity by Year");
